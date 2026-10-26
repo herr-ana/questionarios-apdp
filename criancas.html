@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex,nofollow,noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Questionários — Crianças e adolescentes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="card">
+        <a class="back" href="index.html">← Voltar</a>
+        <div class="eyebrow">Portal das crianças e adolescentes</div>
+        <h1>Os teus questionários</h1>
+        <p>Escolhe a tua idade em anos completos para veres os questionários que deves preencher.</p>
+        <label for="idade">Idade</label>
+        <select id="idade"><option value="">Seleciona a idade</option></select>
+        <section id="resultados" aria-live="polite"></section>
+        <p class="note">Se precisares de ajuda, pede apoio ao adulto ou investigador responsável. Lê as instruções e o consentimento de cada questionário.</p>
+    </main>
+    <script>
+        const items = [
+            { name: 'CLINIC-1', min: 8, max: 11, platform: 'Tally', url: 'https://tally.so/r/44rP2o' },
+            { name: 'CLINIC-2', min: 12, max: 17, platform: 'Tally', url: 'https://tally.so/r/GxlYrz' },
+            { name: 'CASSS Nível 1', min: 8, max: 11, platform: 'Microsoft Forms', url: 'https://forms.office.com/e/buF1ppTmfF' },
+            { name: 'CASSS Nível 2', min: 12, max: 17, platform: 'Microsoft Forms', url: 'https://forms.office.com/e/XNaRkZYuzi' },
+            { name: 'SDQ-POR A11-17', min: 11, max: 17, platform: 'Microsoft Forms', url: 'https://forms.office.com/e/VaWyt6mszX' }
+        ];
+
+        const select = document.querySelector('#idade');
+        const out = document.querySelector('#resultados');
+
+        for (let n = 8; n <= 17; n++) {
+            const option = document.createElement('option');
+            option.value = n;
+            option.textContent = n + ' anos';
+            select.appendChild(option);
+        }
+
+        select.addEventListener('change', () => {
+            out.replaceChildren();
+            if (!select.value) return;
+            const age = Number(select.value);
+            const list = items.filter(item => age >= item.min && age <= item.max);
+            const heading = document.createElement('h2');
+            heading.textContent = 'Questionários para ' + age + ' anos';
+            out.appendChild(heading);
+            const ol = document.createElement('ol');
+            ol.className = 'forms';
+            for (const item of list) {
+                const li = document.createElement('li');
+                const info = document.createElement('div');
+                const strong = document.createElement('strong');
+                const small = document.createElement('small');
+                const link = document.createElement('a');
+                strong.textContent = item.name;
+                small.textContent = item.platform;
+                info.append(strong, small);
+                link.href = item.url;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                link.textContent = 'Abrir ↗';
+                li.append(info, link);
+                ol.appendChild(li);
+            }
+            out.appendChild(ol);
+        });
+    </script>
+</body>
+</html>
